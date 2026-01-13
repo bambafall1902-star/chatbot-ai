@@ -1,33 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Test Chatbot</title>
-</head>
-<body>
-
-<h1>✅ Chatbot fonctionne</h1>
-
-<input id="msg" placeholder="Écris un message">
-<button onclick="send()">Envoyer</button>
-
-<pre id="res"></pre>
-
-<script>
-async function send(){
-  const msg=document.getElementById("msg").value;
-
-  const r=await fetch("/api/chat",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({message:msg})
-  });
-
-  const d=await r.json();
-  document.getElementById("res").innerText=d.reply;
-}
-</script>
-
-</body>
-</html>
-
+fetch("/api/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: userMessage,
+    history: chatHistory
+  })
+})
+.then(res => res.json())
+.then(data => {
+  console.log(data.reply);
+});
