@@ -17,20 +17,26 @@ export default async function handler(req, res) {
         messages: [
           { role: "system", content: "Tu es un assistant client professionnel." },
           { role: "user", content: message }
-        ],
-        temperature: 0.4
+        ]
       })
     });
 
     const data = await response.json();
 
+    // 👇 AFFICHER L'ERREUR OPENAI
+    if (data.error) {
+      return res.status(500).json({
+        reply: "❌ OpenAI error: " + data.error.message
+      });
+    }
+
     return res.status(200).json({
-      reply: data.choices?.[0]?.message?.content || "Aucune réponse"
+      reply: data.choices[0].message.content
     });
 
   } catch (error) {
     return res.status(500).json({
-      reply: "Erreur serveur"
+      reply: "❌ Server error"
     });
   }
 }
